@@ -6,16 +6,17 @@ class AbstractMelonOrder(object):
         self.species = species
         self.qty = qty
         self.shipped = False
-        
+
     def get_total(self):
         """Calculate price."""
         base_price = 5
         # Christmas melons will cost 1.5 times base price.
         if self.species == "Christmas melon":
             base_price = base_price * 1.5
-        # a flat fee of $3 will be added to all international orders with less than 10 melons.
-        
         total = (1 + self.tax) * self.qty * base_price
+        # a flat fee of $3 will be added to all international orders with less than 10 melons.
+        if self.order_type == "international" and self.qty < 10:
+            total = total + 3.0
         return total
 
     def mark_shipped(self):
